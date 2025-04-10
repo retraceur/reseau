@@ -1,4 +1,23 @@
 <?php
+/**
+ * Plugin Name: Réseau
+ * Plugin URI: https://github.com/retraceur/reseau/
+ * Description: Retraceur's Network feature as a plugin.
+ * Version: 1.0.0-aplpha
+ * Requires PHP: 5.6
+ * Requires Retraceur: 1.0.0-beta1
+ * Up to Retraceur:    1.0.0
+ * License: GNU/GPL 2
+ * Author: imath
+ * Author URI: https://imathi.eu/
+ * Text Domain: retraceur-reseau
+ * Domain Path: /languages/
+ * Network: True
+ * GitHub Plugin URI: https://github.com/retraceur/reseau/
+ */
+
+// Exit if accessed directly.
+defined( 'ABSPATH' ) || exit;
 
 function retraceur_reseau_init() {
 	require dirname( __FILE__ ) . '/inc/class-wp-site-query.php';

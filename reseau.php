@@ -3,7 +3,7 @@
  * Plugin Name: Réseau
  * Plugin URI: https://github.com/retraceur/reseau/
  * Description: Retraceur's Network feature as a plugin.
- * Version: 1.0.0-aplpha
+ * Version: 1.0.0-alpha
  * Requires PHP: 5.6
  * Requires Retraceur: 1.0.0
  * Up to Retraceur:    1.0.0

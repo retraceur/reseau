@@ -5,7 +5,7 @@
  * Description: Retraceur's Network feature as a plugin.
  * Version: 1.0.0-aplpha
  * Requires PHP: 5.6
- * Requires Retraceur: 1.0.0-beta1
+ * Requires Retraceur: 1.0.0
  * Up to Retraceur:    1.0.0
  * License: GNU/GPL 2
  * Author: imath
@@ -17,7 +17,9 @@
  */
 
 // Exit if accessed directly.
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 function retraceur_reseau_init() {
 	require dirname( __FILE__ ) . '/inc/class-wp-site-query.php';

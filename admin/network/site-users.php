@@ -327,7 +327,7 @@ if ( current_user_can( 'promote_users' ) && apply_filters( 'show_network_site_us
 			<td><select name="new_role" id="new_role_adduser">
 			<?php
 			switch_to_blog( $id );
-			wp_dropdown_roles( get_option( 'default_role' ) );
+			wp_dropdown_roles( retraceur_get_default_role() );
 			restore_current_blog();
 			?>
 			</select></td>
@@ -365,7 +365,7 @@ if ( current_user_can( 'create_users' ) && apply_filters( 'show_network_site_use
 			<td><select name="new_role" id="new_role_newuser">
 			<?php
 			switch_to_blog( $id );
-			wp_dropdown_roles( get_option( 'default_role' ) );
+			wp_dropdown_roles( retraceur_get_default_role() );
 			restore_current_blog();
 			?>
 			</select></td>

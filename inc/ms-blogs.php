@@ -10,6 +10,11 @@
  * @subpackage Multisite
  */
 
+// Don't load directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
+
 require_once dirname( __FILE__ ) . '/ms-site.php';
 require_once dirname( __FILE__ ) . '/ms-network.php';
 

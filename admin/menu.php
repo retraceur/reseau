@@ -9,11 +9,11 @@ if ( is_multisite() ) {
 }
 
 if ( is_multisite() ) {
-	$submenu['profile.php'][10] = array( __( 'Add New User' ), 'promote_users', 'user-new.php' );
+	$submenu['profile.php'][10] = array( __( 'Add User' ), 'promote_users', 'user-new.php' );
 }
 
 if ( is_multisite() ) {
-	$submenu['users.php'][10] = array( __( 'Add New User' ), 'promote_users', 'user-new.php' );
+	$submenu['users.php'][10] = array( __( 'Add User' ), 'promote_users', 'user-new.php' );
 }
 
 if ( is_multisite() && ! is_main_site() ) {

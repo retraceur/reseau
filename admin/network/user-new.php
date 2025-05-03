@@ -1,6 +1,6 @@
 <?php
 /**
- * Add New User network administration panel.
+ * Add User network administration panel.
  *
  * @since WP 3.1.0
  * @since 1.0.0 Retraceur fork.
@@ -13,7 +13,7 @@
 require_once __DIR__ . '/admin.php';
 
 if ( ! current_user_can( 'create_users' ) ) {
-	wp_die( __( 'Sorry, you are not allowed to add users to this network.' ) );
+	wp_die( __( 'Sorry, you are not allowed to add contributors to this network.' ) );
 }
 
 get_current_screen()->add_help_tab(
@@ -21,8 +21,8 @@ get_current_screen()->add_help_tab(
 		'id'      => 'overview',
 		'title'   => __( 'Overview' ),
 		'content' =>
-			'<p>' . __( 'Add User will set up a new user account on the network and send that person an email with username and password.' ) . '</p>' .
-			'<p>' . __( 'Users who are signed up to the network without a site are added as subscribers to the main or primary dashboard site, giving them profile pages to manage their accounts. These users will only see Dashboard and My Sites in the main navigation until a site is created for them.' ) . '</p>',
+			'<p>' . __( 'Add Contributor will set up a new user account on the network and send that person an email with username and password.' ) . '</p>' .
+			'<p>' . __( 'Contributors who are signed up to the network without a site are added as contributors to the main or primary dashboard site, giving them profile pages to manage their accounts. These users will only see Dashboard and My Sites in the main navigation until a site is created for them.' ) . '</p>',
 	)
 );
 
@@ -34,7 +34,7 @@ if ( isset( $_REQUEST['action'] ) && 'add-user' === $_REQUEST['action'] ) {
 	}
 
 	if ( ! is_array( $_POST['user'] ) ) {
-		wp_die( __( 'Cannot create an empty user.' ) );
+		wp_die( __( 'Cannot create an empty contributor.' ) );
 	}
 
 	$user = wp_unslash( $_POST['user'] );
@@ -48,7 +48,7 @@ if ( isset( $_REQUEST['action'] ) && 'add-user' === $_REQUEST['action'] ) {
 		$user_id  = wpmu_create_user( esc_html( strtolower( $user['username'] ) ), $password, sanitize_email( $user['email'] ) );
 
 		if ( ! $user_id ) {
-			$add_user_errors = new WP_Error( 'add_user_fail', __( 'Cannot add user.' ) );
+			$add_user_errors = new WP_Error( 'add_user_fail', __( 'Cannot add contributor.' ) );
 		} else {
 			/**
 			 * Fires after a new user has been created via the network user-new.php page.
@@ -84,23 +84,23 @@ if ( isset( $_GET['update'] ) ) {
 			}
 		}
 
-		$message = __( 'User added.' );
+		$message = __( 'Contributor added.' );
 
 		if ( $edit_link ) {
-			$message .= sprintf( ' <a href="%s">%s</a>', $edit_link, __( 'Edit user' ) );
+			$message .= sprintf( ' <a href="%s">%s</a>', $edit_link, __( 'Edit contributor' ) );
 		}
 	}
 }
 
 // Used in the HTML title tag.
-$title       = __( 'Add New User' );
+$title       = __( 'Add Contributor' );
 $parent_file = 'users.php';
 
 require_once ABSPATH . 'wp-admin/admin-header.php';
 ?>
 
 <div class="wrap">
-<h1 id="add-new-user"><?php _e( 'Add New User' ); ?></h1>
+<h1 id="add-new-user"><?php _e( 'Add Contributor' ); ?></h1>
 <?php
 if ( '' !== $message ) {
 	wp_admin_notice(
@@ -154,7 +154,7 @@ if ( isset( $add_user_errors ) && is_wp_error( $add_user_errors ) ) {
 	do_action( 'network_user_new_form' );
 
 	wp_nonce_field( 'add-user', '_wpnonce_add-user' );
-	submit_button( __( 'Add User' ), 'primary', 'add-user' );
+	submit_button( __( 'Add Contributor' ), 'primary', 'add-user' );
 	?>
 	</form>
 </div>

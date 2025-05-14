@@ -1152,3 +1152,17 @@ function get_site_screen_help_tab_args() {
 			'<p>' . __( '<strong>Settings</strong> &mdash; This page shows a list of all settings associated with this site. Some are created by WordPress and others are created by plugins you activate. Note that some fields are grayed out and say Serialized Data. You cannot modify these values due to the way the setting is stored in the database.' ) . '</p>',
 	);
 }
+
+/**
+ * Stop execution if the role can not be assigned by the current user.
+ *
+ * @since WP 6.8.0
+ *
+ * @param string $role Role the user is attempting to assign.
+ */
+function wp_ensure_editable_role( $role ) {
+	$roles = get_editable_roles();
+	if ( ! isset( $roles[ $role ] ) ) {
+		wp_die( __( 'Sorry, you are not allowed to give users that role.' ), 403 );
+	}
+}

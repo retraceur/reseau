@@ -52,6 +52,9 @@ if ( isset( $_REQUEST['action'] ) && 'adduser' === $_REQUEST['action'] ) {
 		$redirect = add_query_arg( array( 'update' => 'addexisting' ), 'user-new.php' );
 	} else {
 		if ( isset( $_POST['noconfirmation'] ) && current_user_can( 'manage_network_users' ) ) {
+
+			wp_ensure_editable_role( $_REQUEST['role'] );
+
 			$result = add_existing_user_to_blog(
 				array(
 					'user_id' => $user_id,

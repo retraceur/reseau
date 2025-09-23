@@ -130,9 +130,9 @@ function ms_site_check() {
 /**
  * Retrieves the closest matching network for a domain and path.
  *
- * @since WP 3.9.0
+ * {@internal In WP 4.4.0, converted to a wrapper for WP_Network::get_by_path()}
  *
- * @internal In 4.4.0, converted to a wrapper for WP_Network::get_by_path()
+ * @since WP 3.9.0
  *
  * @param string   $domain   Domain to check.
  * @param string   $path     Path to check.
@@ -548,11 +548,11 @@ function wpmu_current_site() {
 /**
  * Retrieves an object containing information about the requested network.
  *
+ * {@internal In WP 4.6.0, converted to use get_network()}
+ *
  * @since WP 3.9.0
  * @deprecated WP 4.7.0 Use get_network()
  * @see get_network()
- *
- * @internal In 4.6.0, converted to use get_network()
  *
  * @param object|int $network The network's database row or ID.
  * @return WP_Network|false Object containing network information if found, false if not.

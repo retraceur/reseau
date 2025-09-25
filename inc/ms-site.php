@@ -1024,6 +1024,8 @@ function clean_blog_cache( $blog ) {
 /**
  * Adds metadata to a site.
  *
+ * For historical reasons both the meta key and the meta value are expected to be "slashed" (slashes escaped) on input.
+ *
  * @since WP 5.1.0
  *
  * @param int    $site_id    Site ID.
@@ -1049,6 +1051,8 @@ function add_site_meta( $site_id, $meta_key, $meta_value, $unique = false ) {
  * You can match based on the key, or key and value. Removing based on key and
  * value, will keep from removing duplicate metadata with the same key. It also
  * allows removing all metadata matching key, if needed.
+ *
+ * For historical reasons both the meta key and the meta value are expected to be "slashed" (slashes escaped) on input.
  *
  * @since WP 5.1.0
  *
@@ -1092,10 +1096,12 @@ function get_site_meta( $site_id, $key = '', $single = false ) {
 /**
  * Updates metadata for a site.
  *
- * Use the $prev_value parameter to differentiate between meta fields with the
+ * Use the `$prev_value` parameter to differentiate between meta fields with the
  * same key and site ID.
  *
  * If the meta field for the site does not exist, it will be added.
+ *
+ * For historical reasons both the meta key and the meta value are expected to be "slashed" (slashes escaped) on input.
  *
  * @since WP 5.1.0
  *

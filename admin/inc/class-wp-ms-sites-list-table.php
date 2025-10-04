@@ -39,7 +39,7 @@ class WP_MS_Sites_List_Table extends WP_List_Table {
 		$this->status_list = array(
 			'archived' => array( 'site-archived', __( 'Archived' ) ),
 			'spam'     => array( 'site-spammed', _x( 'Spam', 'site' ) ),
-			'deleted'  => array( 'site-deleted', __( 'Deleted' ) ),
+			'deleted'  => array( 'site-deleted', __( 'Flagged for Deletion' ) ),
 			'mature'   => array( 'site-mature', __( 'Mature' ) ),
 		);
 
@@ -258,8 +258,8 @@ class WP_MS_Sites_List_Table extends WP_List_Table {
 
 			/* translators: %s: Number of sites. */
 			'deleted'  => _n_noop(
-				'Deleted <span class="count">(%s)</span>',
-				'Deleted <span class="count">(%s)</span>'
+				'Flagged for Deletion <span class="count">(%s)</span>',
+				'Flagged for Deletion <span class="count">(%s)</span>'
 			),
 		);
 
@@ -669,7 +669,7 @@ class WP_MS_Sites_List_Table extends WP_List_Table {
 		 * @since WP 5.3.0
 		 *
 		 * @param string[] $site_states An array of site states. Default 'Main',
-		 *                              'Archived', 'Mature', 'Spam', 'Deleted'.
+		 *                              'Archived', 'Mature', 'Spam', 'Flagged for Deletion'.
 		 * @param WP_Site  $site        The current site object.
 		 */
 		$site_states = apply_filters( 'display_site_states', $site_states, $_site );
@@ -760,7 +760,7 @@ class WP_MS_Sites_List_Table extends WP_List_Table {
 							'activateblog_' . $blog['blog_id']
 						)
 					),
-					_x( 'Activate', 'site' )
+					_x( 'Remove Deletion Flag', 'site' )
 				);
 			} else {
 				$actions['deactivate'] = sprintf(
@@ -771,7 +771,7 @@ class WP_MS_Sites_List_Table extends WP_List_Table {
 							'deactivateblog_' . $blog['blog_id']
 						)
 					),
-					__( 'Deactivate' )
+					__( 'Flag for Deletion' )
 				);
 			}
 
@@ -832,7 +832,7 @@ class WP_MS_Sites_List_Table extends WP_List_Table {
 							'deleteblog_' . $blog['blog_id']
 						)
 					),
-					__( 'Delete' )
+					__( 'Delete Permanently' )
 				);
 			}
 		}
@@ -846,9 +846,9 @@ class WP_MS_Sites_List_Table extends WP_List_Table {
 		/**
 		 * Filters the action links displayed for each site in the Sites list table.
 		 *
-		 * The 'Edit', 'Dashboard', 'Delete', and 'Visit' links are displayed by
+		 * The 'Edit', 'Dashboard', 'Delete Permanently', and 'Visit' links are displayed by
 		 * default for each site. The site's status determines whether to show the
-		 * 'Activate' or 'Deactivate' link, 'Unarchive' or 'Archive' links, and
+		 * 'Remove Deletion Flag' or 'Flag for Deletion' link, 'Unarchive' or 'Archive' links, and
 		 * 'Not Spam' or 'Spam' link for each site.
 		 *
 		 * @since WP 3.1.0

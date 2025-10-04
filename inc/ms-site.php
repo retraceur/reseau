@@ -1245,7 +1245,7 @@ function wp_maybe_transition_site_statuses_on_update( $new_site, $old_site = nul
 		if ( '1' === $new_site->deleted ) {
 
 			/**
-			 * Fires when the 'deleted' status is added to a site.
+			 * Fires when the 'flagged for deletion' status is added to a site.
 			 *
 			 * @since WP 3.5.0
 			 *
@@ -1255,7 +1255,7 @@ function wp_maybe_transition_site_statuses_on_update( $new_site, $old_site = nul
 		} else {
 
 			/**
-			 * Fires when the 'deleted' status is removed from a site.
+			 * Fires when the 'flagged for deletion' status is removed from a site.
 			 *
 			 * @since WP 3.5.0
 			 *

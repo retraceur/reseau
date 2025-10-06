@@ -847,6 +847,8 @@ var tb_pathToImage = "<?php echo esc_js( includes_url( 'js/thickbox/loadingAnima
 }
 
 /**
+ * @since WP 3.0.0
+ *
  * @param array $users
  * @return bool
  */

@@ -46,7 +46,7 @@ class WP_MS_Sites_List_Table extends WP_List_Table {
 		parent::__construct(
 			array(
 				'plural' => 'sites',
-				'screen' => isset( $args['screen'] ) ? $args['screen'] : null,
+				'screen' => $args['screen'] ?? null,
 			)
 		);
 	}
@@ -137,7 +137,7 @@ class WP_MS_Sites_List_Table extends WP_List_Table {
 			}
 		}
 
-		$order_by = isset( $_REQUEST['orderby'] ) ? $_REQUEST['orderby'] : '';
+		$order_by = $_REQUEST['orderby'] ?? '';
 		if ( 'registered' === $order_by ) {
 			// 'registered' is a valid field name.
 		} elseif ( 'lastupdated' === $order_by ) {

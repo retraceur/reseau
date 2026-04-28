@@ -124,7 +124,7 @@ function get_id_from_blogname( $slug ) {
  *
  * @since WP MU (3.0.0)
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global wpdb $wpdb WP database abstraction object.
  *
  * @param int|string|array $fields  Optional. A blog ID, a blog slug, or an array of fields to query against.
  *                                  Defaults to the current blog ID.
@@ -393,7 +393,7 @@ function get_blog_option( $id, $option, $default_value = false ) {
  *
  * You can create options without values and then update the values later.
  * Existing options will not be updated and checks are performed to ensure that you
- * aren't adding a protected WordPress option. Care should be taken to not name
+ * aren't adding a protected WP option. Care should be taken to not name
  * options the same as the ones which are protected.
  *
  * @since WP MU (3.0.0)
@@ -422,7 +422,7 @@ function add_blog_option( $id, $option, $value ) {
 }
 
 /**
- * Removes an option by name for a given blog ID. Prevents removal of protected WordPress options.
+ * Removes an option by name for a given blog ID. Prevents removal of protected WP options.
  *
  * @since WP MU (3.0.0)
  *
@@ -488,7 +488,7 @@ function update_blog_option( $id, $option, $value, $deprecated = null ) {
  * @see restore_current_blog()
  * @since WP MU (3.0.0)
  *
- * @global wpdb            $wpdb               WordPress database abstraction object.
+ * @global wpdb            $wpdb               WP database abstraction object.
  * @global int             $blog_id
  * @global array           $_wp_switched_stack
  * @global bool            $switched
@@ -537,53 +537,7 @@ function switch_to_blog( $new_blog_id, $deprecated = null ) {
 	$GLOBALS['table_prefix'] = $wpdb->get_blog_prefix();
 	$GLOBALS['blog_id']      = $new_blog_id;
 
-	if ( function_exists( 'wp_cache_switch_to_blog' ) ) {
-		wp_cache_switch_to_blog( $new_blog_id );
-	} else {
-		global $wp_object_cache;
-
-		if ( is_object( $wp_object_cache ) && isset( $wp_object_cache->global_groups ) ) {
-			$global_groups = $wp_object_cache->global_groups;
-		} else {
-			$global_groups = false;
-		}
-
-		wp_cache_init();
-
-		if ( function_exists( 'wp_cache_add_global_groups' ) ) {
-			if ( is_array( $global_groups ) ) {
-				wp_cache_add_global_groups( $global_groups );
-			} else {
-				wp_cache_add_global_groups(
-					array(
-						'blog-details',
-						'blog-id-cache',
-						'blog-lookup',
-						'blog_meta',
-						'global-posts',
-						'image_editor',
-						'networks',
-						'network-queries',
-						'sites',
-						'site-details',
-						'site-options',
-						'site-queries',
-						'site-transient',
-						'theme_files',
-						'rss',
-						'users',
-						'user-queries',
-						'user_meta',
-						'useremail',
-						'userlogins',
-						'userslugs',
-					)
-				);
-			}
-
-			wp_cache_add_non_persistent_groups( array( 'counts', 'plugins', 'theme_json' ) );
-		}
-	}
+	wp_cache_switch_to_blog( $new_blog_id );
 
 	/** This filter is documented in wp-includes/ms-blogs.php */
 	do_action( 'switch_blog', $new_blog_id, $prev_blog_id, 'switch' );
@@ -599,7 +553,7 @@ function switch_to_blog( $new_blog_id, $deprecated = null ) {
  * @see switch_to_blog()
  * @since WP MU (3.0.0)
  *
- * @global wpdb            $wpdb               WordPress database abstraction object.
+ * @global wpdb            $wpdb               WP database abstraction object.
  * @global array           $_wp_switched_stack
  * @global int             $blog_id
  * @global bool            $switched
@@ -632,53 +586,7 @@ function restore_current_blog() {
 	$GLOBALS['blog_id']      = $new_blog_id;
 	$GLOBALS['table_prefix'] = $wpdb->get_blog_prefix();
 
-	if ( function_exists( 'wp_cache_switch_to_blog' ) ) {
-		wp_cache_switch_to_blog( $new_blog_id );
-	} else {
-		global $wp_object_cache;
-
-		if ( is_object( $wp_object_cache ) && isset( $wp_object_cache->global_groups ) ) {
-			$global_groups = $wp_object_cache->global_groups;
-		} else {
-			$global_groups = false;
-		}
-
-		wp_cache_init();
-
-		if ( function_exists( 'wp_cache_add_global_groups' ) ) {
-			if ( is_array( $global_groups ) ) {
-				wp_cache_add_global_groups( $global_groups );
-			} else {
-				wp_cache_add_global_groups(
-					array(
-						'blog-details',
-						'blog-id-cache',
-						'blog-lookup',
-						'blog_meta',
-						'global-posts',
-						'image_editor',
-						'networks',
-						'network-queries',
-						'sites',
-						'site-details',
-						'site-options',
-						'site-queries',
-						'site-transient',
-						'theme_files',
-						'rss',
-						'users',
-						'user-queries',
-						'user_meta',
-						'useremail',
-						'userlogins',
-						'userslugs',
-					)
-				);
-			}
-
-			wp_cache_add_non_persistent_groups( array( 'counts', 'plugins', 'theme_json' ) );
-		}
-	}
+	wp_cache_switch_to_blog( $new_blog_id );
 
 	/** This filter is documented in wp-includes/ms-blogs.php */
 	do_action( 'switch_blog', $new_blog_id, $prev_blog_id, 'restore' );
@@ -687,6 +595,77 @@ function restore_current_blog() {
 	$GLOBALS['switched'] = ! empty( $GLOBALS['_wp_switched_stack'] );
 
 	return true;
+}
+
+/**
+ * Fallback logic for switching cache context when an object cache drop-in lacks
+ * a switch_to_blog() method.
+ *
+ * Reinitializes the cache and restores global/non-persistent groups.
+ *
+ * Used by the wp_cache_switch_to_blog() compatibility function, abstracted only
+ * to allow for unit testing outside of the drop-in plugin inclusion circus.
+ *
+ * @since WP 7.0.0
+ *
+ * @global WP_Object_Cache $wp_object_cache Object cache global instance.
+ */
+function wp_cache_switch_to_blog_fallback() {
+	global $wp_object_cache;
+
+	$global_groups         = false;
+	$non_persistent_groups = false;
+
+	if ( is_object( $wp_object_cache ) && isset( $wp_object_cache->global_groups ) ) {
+		$global_groups         = array_keys( $wp_object_cache->global_groups );
+		$all_groups            = array_fill_keys( array_keys( $wp_object_cache->cache ), true );
+		$non_persistent_groups = array_keys( array_diff_key( $all_groups, $wp_object_cache->global_groups ) );
+	}
+
+	wp_cache_init();
+
+	if ( function_exists( 'wp_cache_add_global_groups' ) ) {
+		if ( ! is_array( $global_groups ) || empty( $global_groups ) ) {
+			$global_groups = array(
+				'blog-details',
+				'blog-id-cache',
+				'blog-lookup',
+				'blog_meta',
+				'global-posts',
+				'image_editor',
+				'networks',
+				'network-queries',
+				'sites',
+				'site-details',
+				'site-options',
+				'site-queries',
+				'site-transient',
+				'theme_files',
+				'translation_files',
+				'rss',
+				'users',
+				'user-queries',
+				'user_meta',
+				'useremail',
+				'userlogins',
+				'userslugs',
+			);
+		}
+
+		wp_cache_add_global_groups( $global_groups );
+	}
+
+	if ( function_exists( 'wp_cache_add_non_persistent_groups' ) ) {
+		if ( ! is_array( $non_persistent_groups ) || empty( $non_persistent_groups ) ) {
+			$non_persistent_groups = array(
+				'counts',
+				'plugins',
+				'theme_json',
+			);
+		}
+
+		wp_cache_add_non_persistent_groups( $non_persistent_groups );
+	}
 }
 
 /**
@@ -755,7 +734,7 @@ function update_archived( $id, $archived ) {
  * @since WP MU (3.0.0)
  * @since WP 5.1.0 Use wp_update_site() internally.
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global wpdb $wpdb WP database abstraction object.
  *
  * @param int    $blog_id    Blog ID.
  * @param string $pref       Field name.
@@ -795,7 +774,7 @@ function update_blog_status( $blog_id, $pref, $value, $deprecated = null ) {
  *
  * @since WP MU (3.0.0)
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global wpdb $wpdb WP database abstraction object.
  *
  * @param int    $id   Blog ID.
  * @param string $pref Field name.
@@ -817,7 +796,7 @@ function get_blog_status( $id, $pref ) {
  *
  * @since WP MU (3.0.0)
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global wpdb $wpdb WP database abstraction object.
  *
  * @param mixed $deprecated Not used.
  * @param int   $start      Optional. Number of blogs to offset the query. Used to build LIMIT clause.

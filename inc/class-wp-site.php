@@ -192,7 +192,7 @@ final class WP_Site {
 	 *
 	 * @since WP 4.5.0
 	 *
-	 * @param WP_Site|object $site A site object.
+	 * @param object $site A site object.
 	 */
 	public function __construct( $site ) {
 		foreach ( get_object_vars( $site ) as $key => $value ) {

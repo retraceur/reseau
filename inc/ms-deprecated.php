@@ -696,6 +696,7 @@ function install_blog_defaults( $blog_id, $user_id ) {
  * Previously used in core to mark a user as spam or "ham" (not spam) in Multisite.
  *
  * @since WP 3.0.0
+ * @since WP 3.0.2 Deprecated fourth argument.
  * @deprecated WP 5.3.0 Use wp_update_user()
  * @see wp_update_user()
  *
@@ -705,7 +706,7 @@ function install_blog_defaults( $blog_id, $user_id ) {
  * @param string $pref       The column in the wp_users table to update the user's status
  *                           in (presumably user_status, spam, or deleted).
  * @param int    $value      The new status for the user.
- * @param null   $deprecated Deprecated as of 3.0.2 and should not be used.
+ * @param mixed  $deprecated Not used.
  * @return int   The initially passed $value.
  */
 function update_user_status( $id, $pref, $value, $deprecated = null ) {

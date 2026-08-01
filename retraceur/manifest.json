@@ -1,0 +1,14 @@
+{
+	"$schema": "https://raw.githubusercontent.com/retraceur/ressources/refs/heads/main/schemas/retraceur-manifest.json",
+	"name": "retraceur/reseau",
+	"type": "plugin",
+	"requires": {
+		"retraceur": "1.0.0",
+		"php": "7.4",
+		"dependencies": []
+	},
+	"author": {
+		"name": "imath",
+		"url": "https://imathi.eu"
+	}
+}
